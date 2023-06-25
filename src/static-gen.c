@@ -42,6 +42,7 @@ void page_add_field_old(Page* page, char* field) {
 void page_add_gen(char*** change, int* num, int* cap, char* field) {
   // out of space? resize
   if (*num + 1 >= *cap) {
+    printf("size = %d", *num * 2);
     int new_size = *num * 2;
     *change = (char**) realloc(*change, new_size);
     *cap = new_size;
@@ -106,12 +107,12 @@ Page* parse_page(char* text) {
 }
 
 int main(int argc, char** argv) {
-  char* total_str = (char*) malloc(sizeof(char) * BUFFER_SIZE);
+  char* total_str = (char*) calloc(sizeof(char) * BUFFER_SIZE, sizeof(char) * BUFFER_SIZE);
   char* str = (char*) malloc(sizeof(char*) * BUFFER_SIZE);
-  char *ret = fgets(str, BUFFER_SIZE, stdin);
-  while (strlen(total_str) + 1 < BUFFER_SIZE && strchr(ret, EOF) == NULL && ret == str) {
+  char* ret = fgets(str, BUFFER_SIZE, stdin);
+  while (ret != NULL && strlen(total_str) + 1 < BUFFER_SIZE && strchr(ret, EOF) == NULL && ret == str) {
     strcat(total_str, str);
-    char *ret = fgets(str, BUFFER_SIZE, stdin);
+    ret = fgets(str, BUFFER_SIZE, stdin);
   }
   // char test[] = "<p>$0$</p><p>$1$</p>";
   
